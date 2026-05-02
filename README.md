@@ -1,20 +1,77 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# Your Stamps
 
-# Run and deploy your AI Studio app
+Your Stamps は、AIや手描きで作ったキャラクター画像に、あとから日本語テキストを入れてスタンプ画像として整えるための非公式補助ツールです。
 
-This contains everything you need to run your app locally.
+画像生成AIは日本語文字が崩れやすいため、このアプリではキャラクター画像と文字入れを分けています。キャラクター画像を作成し、文字はあとからアプリ内で入力して、スタンプとして見やすい形に整えます。
 
-View your app in AI Studio: https://ai.studio/apps/431ccf18-25f0-489c-93ab-6970d0188224
+## このアプリでできること
 
-## Run Locally
+- キャラクター画像の生成
+- 参考画像を使ったキャラクター生成
+- 日本語テキストの後入れ
+- フォントと文字色の変更
+- スタンプ画像のプレビュー
+- 作成したスタンプ画像のブラウザ保存
+- LINE Creators Market 申請前の手順確認
 
-**Prerequisites:**  Node.js
+## 位置づけ
 
+このアプリは LINE 公式ツールではありません。
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+LINE Creators Market などへ申請する前に、画像や文字を整えるための非公式の下ごしらえツールです。審査通過や売上を保証するものではありません。
+
+## データの扱い
+
+- 入力したプロンプトと参考画像は、画像生成のためにサーバー側APIへ送信されます。
+- 生成処理には Gemini API を使用します。
+- 保存済みスタンプは、利用者のブラウザの localStorage に保存されます。
+- このアプリは、作成したスタンプ画像やプロンプトをサーバー側に永続保存する設計ではありません。
+- 公開運用する場合は、利用規約とプライバシーポリシーを別途用意してください。
+
+## セキュリティ
+
+Gemini API キーはサーバー側の環境変数として管理します。ブラウザ側へ API キーを渡さない構成です。
+
+`.env.local` や本物の API キーは Git に含めないでください。`.env.example` だけを雛形として公開します。
+
+## 環境変数
+
+`.env.example` を参考に、ローカルでは `.env.local` または `.env` を作成してください。
+
+```bash
+GEMINI_API_KEY=your_api_key_here
+```
+
+Vercelで公開する場合は、Vercel Project Settings の Environment Variables に `GEMINI_API_KEY` を設定してください。
+
+## ローカル起動
+
+```bash
+npm install
+npm run dev
+```
+
+VercelのAPI Routeを含めた挙動を確認したい場合は、Vercel CLIでの確認も検討してください。
+
+```bash
+vercel dev
+```
+
+## ビルド
+
+```bash
+npm run build
+```
+
+## 公開前チェック
+
+- `.env.local` が Git に含まれていないこと
+- ブラウザ側に `GEMINI_API_KEY` が含まれていないこと
+- Vercel の環境変数に `GEMINI_API_KEY` が設定されていること
+- 生成画像の利用条件を確認していること
+- LINE Creators Market の制作ガイドラインを確認していること
+- 審査通過や売上を保証しない旨を販売ページに明記すること
+
+## 注意
+
+画像生成APIを使用するため、利用状況によってAPI利用料金が発生する可能性があります。公開運用する場合は、利用上限や課金アラートを設定してください。
