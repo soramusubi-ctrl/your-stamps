@@ -1,0 +1,44 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=M+PLUS+Rounded+1c:wght@700;800&family=DotGothic16&family=Sawarabi+Gothic&family=Kaisei+Decol:wght@700&family=RocknRoll+One&family=Hachi+Maru+Pop&family=Kiwi+Maru:wght@500&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-rounded: "M PLUS Rounded 1c", sans-serif;
+  --font-dot: "DotGothic16", sans-serif;
+  --font-gothic: "Sawarabi Gothic", sans-serif;
+  --font-kaisei: "Kaisei Decol", serif;
+  --font-rock: "RocknRoll One", sans-serif;
+  --font-hachi: "Hachi Maru Pop", sans-serif;
+  --font-kiwi: "Kiwi Maru", serif;
+
+  --color-brand-primary: #06C755; /* LINE Green */
+  --color-brand-hover: #05b04a;
+  
+  --shadow-minimal: 0 4px 6px -1px rgb(0 0 0 / 0.05), 0 2px 4px -2px rgb(0 0 0 / 0.05);
+  --shadow-strong: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+}
+
+body {
+  @apply bg-slate-50 text-slate-800 antialiased;
+}
+
+.sticker-shadow {
+  box-shadow: var(--shadow-minimal);
+}
+
+.canvas-container {
+  @apply bg-white border-2 border-dashed border-slate-200 rounded-3xl overflow-hidden relative shadow-minimal;
+}
+
+.nav-rail-item {
+  @apply flex flex-col items-center gap-1 w-full py-2 transition-all;
+}
+
+.nav-rail-icon {
+  @apply w-10 h-10 rounded-xl bg-slate-100 flex items-center justify-center text-slate-400 transition-colors;
+}
+
+.nav-rail-icon.active {
+  @apply bg-green-500 text-white shadow-lg shadow-green-200 group-hover:bg-green-600;
+}
+
