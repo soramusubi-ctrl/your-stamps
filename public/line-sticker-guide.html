@@ -1,0 +1,283 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>はじめてのLINEスタンプ申請ガイド | Your Stamps</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --green: #06c755;
+      --ink: #1f2937;
+      --muted: #64748b;
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --line: #e2e8f0;
+      --soft-green: #ecfdf5;
+      --soft-amber: #fffbeb;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top left, #dcfce7, transparent 30%), var(--bg);
+      color: var(--ink);
+      line-height: 1.8;
+    }
+    header {
+      padding: 40px 20px 20px;
+      text-align: center;
+    }
+    main {
+      width: min(920px, calc(100% - 32px));
+      margin: 0 auto 56px;
+    }
+    .hero, .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 28px;
+      box-shadow: 0 18px 50px rgba(15, 23, 42, 0.08);
+    }
+    .hero { padding: 28px; }
+    .card { padding: 24px; margin-top: 18px; }
+    h1 {
+      font-size: clamp(28px, 6vw, 44px);
+      line-height: 1.2;
+      margin: 0 0 12px;
+      letter-spacing: -0.04em;
+    }
+    h2 {
+      font-size: clamp(22px, 4vw, 30px);
+      margin: 0 0 14px;
+      line-height: 1.35;
+    }
+    h3 {
+      font-size: 18px;
+      margin: 0 0 8px;
+    }
+    p { margin: 0 0 12px; }
+    ul, ol { padding-left: 1.4em; margin: 10px 0; }
+    li { margin: 6px 0; }
+    .lead {
+      color: var(--muted);
+      font-size: 16px;
+      margin-bottom: 0;
+    }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: var(--soft-green);
+      color: #047857;
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 16px;
+    }
+    .steps {
+      display: grid;
+      gap: 14px;
+    }
+    .step {
+      display: grid;
+      grid-template-columns: 42px 1fr;
+      gap: 14px;
+      padding: 18px;
+      background: #f8fafc;
+      border: 1px solid var(--line);
+      border-radius: 20px;
+    }
+    .num {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: var(--green);
+      color: white;
+      display: grid;
+      place-items: center;
+      font-weight: 800;
+    }
+    .hint {
+      margin-top: 10px;
+      padding: 10px 12px;
+      border-radius: 14px;
+      background: white;
+      border: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 14px;
+    }
+    .example {
+      background: var(--soft-green);
+      border: 1px solid #bbf7d0;
+      border-radius: 18px;
+      padding: 14px;
+      margin: 10px 0;
+    }
+    .warn {
+      background: var(--soft-amber);
+      border: 1px solid #fde68a;
+      border-radius: 18px;
+      padding: 16px;
+    }
+    .small { color: var(--muted); font-size: 14px; }
+    code {
+      background: #f1f5f9;
+      border: 1px solid #e2e8f0;
+      padding: 2px 6px;
+      border-radius: 8px;
+    }
+    a { color: #047857; font-weight: 700; }
+    footer {
+      text-align: center;
+      color: var(--muted);
+      font-size: 13px;
+      padding: 0 20px 40px;
+    }
+    @media (max-width: 640px) {
+      header { padding-top: 28px; }
+      .hero, .card { border-radius: 22px; padding: 20px; }
+      .step { grid-template-columns: 34px 1fr; padding: 14px; }
+      .num { width: 34px; height: 34px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="badge">Your Stamps 申請前ガイド</div>
+    <h1>はじめてのLINEスタンプ申請ガイド</h1>
+    <p class="lead">作ったスタンプ画像を、LINE Creators Marketで申請するまでの流れを、画面で迷わない順番で説明します。</p>
+  </header>
+
+  <main>
+    <section class="hero">
+      <h2>まず知っておくこと</h2>
+      <p>スタンプ画像を作っただけでは、まだ販売は始まりません。</p>
+      <p>最後はLINE Creators Marketにログインして、スタンプ情報を入力し、画像をアップロードして、審査リクエストをします。</p>
+      <div class="warn">
+        <strong>大事:</strong> Your Stamps はLINE公式ツールではありません。申請や販売は、LINE Creators Market上で行います。審査通過や売上は保証されません。
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>申請の流れ</h2>
+      <div class="steps">
+        <div class="step">
+          <div class="num">1</div>
+          <div>
+            <h3>LINE Creators Marketにログイン</h3>
+            <p>ブラウザでLINE Creators Marketを開き、LINEアカウントでログインします。</p>
+            <p>はじめて使う場合は、画面の案内に沿ってクリエイター登録をします。</p>
+            <div class="hint">ここでは「販売する人の情報」を登録します。公開してよい名前を使いましょう。</div>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="num">2</div>
+          <div>
+            <h3>新規登録から「スタンプ」を選ぶ</h3>
+            <p>管理画面に入ったら「新規登録」を押します。</p>
+            <p>種類を選ぶ画面では「スタンプ」を選びます。</p>
+            <div class="hint">絵文字や着せかえではなく、今回は「スタンプ」です。</div>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="num">3</div>
+          <div>
+            <h3>スタンプ情報を入力する</h3>
+            <p>タイトル、説明文、クリエイター名、コピーライトなどを入力します。</p>
+            <p>ここに書いた内容は販売ページに表示されます。</p>
+            <div class="example">
+              <strong>タイトル例</strong><br />
+              こう言ってほしかった夫婦スタンプ
+            </div>
+            <div class="example">
+              <strong>説明文例</strong><br />
+              夫婦や家族のやりとりで使いやすい、やさしい連絡スタンプです。帰宅連絡、お願い、ありがとう、体調不良、限界の日の一言まで、責めずに伝えたい場面に使えます。
+            </div>
+            <div class="example">
+              <strong>コピーライト例</strong><br />
+              © Your Stamps
+            </div>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="num">4</div>
+          <div>
+            <h3>画像をアップロードする</h3>
+            <p>申請には、次の画像が必要です。</p>
+            <ul>
+              <li>メイン画像 1枚</li>
+              <li>スタンプ画像 8枚・16枚・24枚・32枚・40枚のどれか</li>
+              <li>トークルームタブ画像 1枚</li>
+            </ul>
+            <div class="hint">最初は8枚か16枚がおすすめです。画像はPNG形式で用意します。</div>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="num">5</div>
+          <div>
+            <h3>プレビューで確認する</h3>
+            <p>販売ページやトーク画面でどう見えるかを確認します。</p>
+            <p>文字が小さい、端が切れている、白い四角が残っている場合は直します。</p>
+            <div class="hint">かわいさより先に「読める・切れない・使う場面がある」を見ます。</div>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="num">6</div>
+          <div>
+            <h3>審査をリクエストする</h3>
+            <p>入力と画像を確認したら「リクエスト」または「審査リクエスト」を押します。</p>
+            <p>LINE側の審査が終わるまで待ちます。</p>
+            <div class="hint">承認されたあと、販売開始には「リリース」ボタンが必要な場合があります。</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>申請前チェック</h2>
+      <ul>
+        <li>タイトルは、誰が使うスタンプかわかる</li>
+        <li>説明文は、どんな場面で使うかわかる</li>
+        <li>文字がスマホ画面でも読める</li>
+        <li>画像の端が切れていない</li>
+        <li>背景の白四角が意図せず残っていない</li>
+        <li>有名キャラ・ロゴ・商標に似すぎていない</li>
+        <li>LINE公式ツールのように見える名前にしていない</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>よくある失敗</h2>
+      <h3>文字が小さすぎる</h3>
+      <p>スマホのトーク画面では、思ったより小さく見えます。短い言葉にするか、文字を大きくします。</p>
+      <h3>画像の端が切れている</h3>
+      <p>上下左右に少し余白を残します。</p>
+      <h3>AI画像の文字が崩れている</h3>
+      <p>画像生成AIに文字まで作らせると崩れやすいです。キャラ画像だけ作って、文字はあとから入れるのがおすすめです。</p>
+      <h3>公式とまぎらわしい名前にしている</h3>
+      <p>LINE公式のアプリに見える名前や説明は避けます。「非公式の補助ツール」「申請前の下ごしらえ」と書くと安全です。</p>
+    </section>
+
+    <section class="card">
+      <h2>最後の確認</h2>
+      <p>申請前に、声に出してこの3つを確認してください。</p>
+      <ol>
+        <li>これは誰が使うスタンプ？</li>
+        <li>どんな場面で使う？</li>
+        <li>小さい画面でも読める？</li>
+      </ol>
+      <p>この3つが答えられれば、かなり良い状態です。</p>
+    </section>
+  </main>
+
+  <footer>
+    Your Stamps はLINE公式ツールではありません。申請や販売はLINE Creators Marketで行ってください。
+  </footer>
+</body>
+</html>
