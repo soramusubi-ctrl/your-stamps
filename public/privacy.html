@@ -1,0 +1,160 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>プライバシーポリシー | Your Stamps</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --green: #06c755;
+      --ink: #1f2937;
+      --muted: #64748b;
+      --bg: #f8fafc;
+      --card: #ffffff;
+      --line: #e2e8f0;
+      --soft-green: #ecfdf5;
+      --soft-amber: #fffbeb;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top left, #dcfce7, transparent 30%), var(--bg);
+      color: var(--ink);
+      line-height: 1.8;
+    }
+    header { padding: 40px 20px 20px; text-align: center; }
+    main { width: min(920px, calc(100% - 32px)); margin: 0 auto 56px; }
+    .hero, .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 28px;
+      box-shadow: 0 18px 50px rgba(15, 23, 42, 0.08);
+    }
+    .hero { padding: 28px; }
+    .card { padding: 24px; margin-top: 18px; }
+    h1 { font-size: clamp(28px, 6vw, 44px); line-height: 1.2; margin: 0 0 12px; letter-spacing: -0.04em; }
+    h2 { font-size: clamp(22px, 4vw, 30px); margin: 0 0 14px; line-height: 1.35; }
+    h3 { font-size: 18px; margin: 0 0 8px; }
+    p { margin: 0 0 12px; }
+    ul { padding-left: 1.4em; margin: 10px 0; }
+    li { margin: 6px 0; }
+    .lead { color: var(--muted); font-size: 16px; margin-bottom: 0; }
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: var(--soft-green);
+      color: #047857;
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 16px;
+    }
+    .warn { background: var(--soft-amber); border: 1px solid #fde68a; border-radius: 18px; padding: 16px; }
+    .small { color: var(--muted); font-size: 14px; }
+    a { color: #047857; font-weight: 700; }
+    footer { text-align: center; color: var(--muted); font-size: 13px; padding: 0 20px 40px; }
+    @media (max-width: 640px) {
+      header { padding-top: 28px; }
+      .hero, .card { border-radius: 22px; padding: 20px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="badge">Your Stamps</div>
+    <h1>プライバシーポリシー</h1>
+    <p class="lead">このページでは、Your Stampsで扱う情報と、その使い方について説明します。</p>
+  </header>
+
+  <main>
+    <section class="hero">
+      <p>本プライバシーポリシーは、Your Stamps（以下「本サービス」）における、利用者情報の取り扱いについて定めるものです。</p>
+      <p class="small">制定日: 2026年5月3日</p>
+      <div class="warn">
+        <strong>大事:</strong> 本サービスはLINE公式ツールではありません。LINE Creators Marketなどへの申請前に、画像や文字を整えるための非公式補助ツールです。
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>1. 本サービスで取得・利用する情報</h2>
+      <p>本サービスでは、機能の提供に必要な範囲で、以下の情報を扱います。</p>
+      <ul>
+        <li>利用者が入力したキャラクター生成用のプロンプト</li>
+        <li>利用者がアップロードした参考画像</li>
+        <li>生成された画像データ</li>
+        <li>利用者が入力したスタンプ用テキスト</li>
+        <li>ブラウザに保存される作成済みスタンプ画像</li>
+      </ul>
+      <p>氏名、住所、電話番号などの個人情報を入力する設計にはしていません。</p>
+    </section>
+
+    <section class="card">
+      <h2>2. 利用目的</h2>
+      <p>取得・利用する情報は、以下の目的で使用します。</p>
+      <ul>
+        <li>キャラクター画像を生成するため</li>
+        <li>参考画像をもとに画像生成を行うため</li>
+        <li>スタンプ画像にテキストを重ねるため</li>
+        <li>作成したスタンプ画像をブラウザ上で保存・表示するため</li>
+        <li>本サービスの不具合対応、品質改善、悪用防止のため</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>3. 外部サービスの利用</h2>
+      <p>本サービスでは、画像生成のために Google の Gemini API を利用します。</p>
+      <p>利用者が入力したプロンプトや参考画像は、画像生成処理のためにサーバー側APIへ送信され、Gemini APIへ送信される場合があります。</p>
+      <p>Gemini APIに送信された情報の取り扱いは、Googleの規約およびプライバシーポリシーにも従います。</p>
+    </section>
+
+    <section class="card">
+      <h2>4. ブラウザ内保存について</h2>
+      <p>本サービスでは、作成済みスタンプ画像を利用者のブラウザの localStorage に保存します。</p>
+      <p>localStorageに保存されたデータは、同じブラウザで本サービスを開いたときに再表示するために使われます。</p>
+      <p>ブラウザのデータ削除、キャッシュ削除、別端末での利用などにより、保存済みスタンプが消える場合があります。</p>
+    </section>
+
+    <section class="card">
+      <h2>5. サーバー側での保存について</h2>
+      <p>本サービスは、利用者が作成したスタンプ画像、入力プロンプト、参考画像を、サーバー側で永続保存する設計ではありません。</p>
+      <p>ただし、サーバーや外部サービスのログに、通信日時、エラー情報、アクセス情報などが一時的に記録される場合があります。</p>
+    </section>
+
+    <section class="card">
+      <h2>6. 第三者提供について</h2>
+      <p>本サービスは、法令に基づく場合を除き、利用者の情報を本人の同意なく第三者へ販売・提供することはありません。</p>
+      <p>ただし、画像生成処理に必要な範囲で、Gemini APIなどの外部サービスへ情報を送信する場合があります。</p>
+    </section>
+
+    <section class="card">
+      <h2>7. 注意事項</h2>
+      <ul>
+        <li>個人情報、秘密情報、第三者に見せたくない画像は入力・アップロードしないでください。</li>
+        <li>生成画像や参考画像を利用する際は、利用している画像生成サービスや素材元の規約を確認してください。</li>
+        <li>LINE Creators Marketへの申請にあたっては、LINE側の最新ガイドラインを確認してください。</li>
+        <li>本サービスは、審査通過や売上を保証するものではありません。</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2>8. プライバシーポリシーの変更</h2>
+      <p>本ポリシーの内容は、必要に応じて変更することがあります。</p>
+      <p>重要な変更がある場合は、本サービス上または関連ページでお知らせします。</p>
+    </section>
+
+    <section class="card">
+      <h2>9. お問い合わせ</h2>
+      <p>本サービスに関するお問い合わせは、販売ページまたは運営者が指定する連絡先からご連絡ください。</p>
+      <p class="small">※公開前に、ここへ実際の問い合わせ先または販売ページの連絡方法を追記してください。</p>
+    </section>
+  </main>
+
+  <footer>
+    © Your Stamps
+  </footer>
+</body>
+</html>
