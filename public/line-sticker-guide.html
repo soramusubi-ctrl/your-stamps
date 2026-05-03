@@ -15,6 +15,7 @@
       --line: #e2e8f0;
       --soft-green: #ecfdf5;
       --soft-amber: #fffbeb;
+      --soft-blue: #eff6ff;
     }
     * { box-sizing: border-box; }
     body {
@@ -24,14 +25,8 @@
       color: var(--ink);
       line-height: 1.8;
     }
-    header {
-      padding: 40px 20px 20px;
-      text-align: center;
-    }
-    main {
-      width: min(920px, calc(100% - 32px));
-      margin: 0 auto 56px;
-    }
+    header { padding: 40px 20px 20px; text-align: center; }
+    main { width: min(980px, calc(100% - 32px)); margin: 0 auto 56px; }
     .hero, .card {
       background: var(--card);
       border: 1px solid var(--line);
@@ -40,29 +35,13 @@
     }
     .hero { padding: 28px; }
     .card { padding: 24px; margin-top: 18px; }
-    h1 {
-      font-size: clamp(28px, 6vw, 44px);
-      line-height: 1.2;
-      margin: 0 0 12px;
-      letter-spacing: -0.04em;
-    }
-    h2 {
-      font-size: clamp(22px, 4vw, 30px);
-      margin: 0 0 14px;
-      line-height: 1.35;
-    }
-    h3 {
-      font-size: 18px;
-      margin: 0 0 8px;
-    }
+    h1 { font-size: clamp(28px, 6vw, 44px); line-height: 1.2; margin: 0 0 12px; letter-spacing: -0.04em; }
+    h2 { font-size: clamp(22px, 4vw, 30px); margin: 0 0 14px; line-height: 1.35; }
+    h3 { font-size: 18px; margin: 0 0 8px; }
     p { margin: 0 0 12px; }
     ul, ol { padding-left: 1.4em; margin: 10px 0; }
     li { margin: 6px 0; }
-    .lead {
-      color: var(--muted);
-      font-size: 16px;
-      margin-bottom: 0;
-    }
+    .lead { color: var(--muted); font-size: 16px; margin-bottom: 0; }
     .badge {
       display: inline-flex;
       align-items: center;
@@ -75,10 +54,7 @@
       font-weight: 700;
       margin-bottom: 16px;
     }
-    .steps {
-      display: grid;
-      gap: 14px;
-    }
+    .steps { display: grid; gap: 14px; }
     .step {
       display: grid;
       grid-template-columns: 42px 1fr;
@@ -114,26 +90,28 @@
       padding: 14px;
       margin: 10px 0;
     }
-    .warn {
-      background: var(--soft-amber);
-      border: 1px solid #fde68a;
+    .field {
+      background: #ffffff;
+      border: 1px solid var(--line);
       border-radius: 18px;
       padding: 16px;
+      margin: 12px 0;
     }
+    .field strong { display: block; margin-bottom: 4px; }
+    .choice {
+      background: var(--soft-blue);
+      border: 1px solid #bfdbfe;
+      border-radius: 14px;
+      padding: 10px 12px;
+      color: #1e3a8a;
+      margin: 8px 0;
+      font-size: 14px;
+    }
+    .warn { background: var(--soft-amber); border: 1px solid #fde68a; border-radius: 18px; padding: 16px; }
     .small { color: var(--muted); font-size: 14px; }
-    code {
-      background: #f1f5f9;
-      border: 1px solid #e2e8f0;
-      padding: 2px 6px;
-      border-radius: 8px;
-    }
+    code { background: #f1f5f9; border: 1px solid #e2e8f0; padding: 2px 6px; border-radius: 8px; }
     a { color: #047857; font-weight: 700; }
-    footer {
-      text-align: center;
-      color: var(--muted);
-      font-size: 13px;
-      padding: 0 20px 40px;
-    }
+    footer { text-align: center; color: var(--muted); font-size: 13px; padding: 0 20px 40px; }
     @media (max-width: 640px) {
       header { padding-top: 28px; }
       .hero, .card { border-radius: 22px; padding: 20px; }
@@ -146,39 +124,38 @@
   <header>
     <div class="badge">Your Stamps 申請前ガイド</div>
     <h1>はじめてのLINEスタンプ申請ガイド</h1>
-    <p class="lead">作ったスタンプ画像を、LINE Creators Marketで申請するまでの流れを、画面で迷わない順番で説明します。</p>
+    <p class="lead">LINE Creators Marketの「新規登録」画面で迷わないように、入力する順番に沿って説明します。</p>
   </header>
 
   <main>
     <section class="hero">
       <h2>まず知っておくこと</h2>
       <p>スタンプ画像を作っただけでは、まだ販売は始まりません。</p>
-      <p>最後はLINE Creators Marketにログインして、スタンプ情報を入力し、画像をアップロードして、審査リクエストをします。</p>
+      <p>最後はLINE Creators Marketにログインして、「新規登録」からスタンプ情報を入力し、画像をアップロードして、審査リクエストをします。</p>
       <div class="warn">
         <strong>大事:</strong> Your Stamps はLINE公式ツールではありません。申請や販売は、LINE Creators Market上で行います。審査通過や売上は保証されません。
       </div>
     </section>
 
     <section class="card">
-      <h2>申請の流れ</h2>
+      <h2>申請画面の流れ</h2>
       <div class="steps">
         <div class="step">
           <div class="num">1</div>
           <div>
-            <h3>LINE Creators Marketにログイン</h3>
-            <p>ブラウザでLINE Creators Marketを開き、LINEアカウントでログインします。</p>
-            <p>はじめて使う場合は、画面の案内に沿ってクリエイター登録をします。</p>
-            <div class="hint">ここでは「販売する人の情報」を登録します。公開してよい名前を使いましょう。</div>
+            <h3>マイページで「新規登録」を押す</h3>
+            <p>LINE Creators Marketにログインして、左側メニューまたは上部の「新規登録」を押します。</p>
+            <div class="hint">はじめてなら、先にクリエイター登録を済ませます。公開してよい名前を使いましょう。</div>
           </div>
         </div>
 
         <div class="step">
           <div class="num">2</div>
           <div>
-            <h3>新規登録から「スタンプ」を選ぶ</h3>
-            <p>管理画面に入ったら「新規登録」を押します。</p>
-            <p>種類を選ぶ画面では「スタンプ」を選びます。</p>
-            <div class="hint">絵文字や着せかえではなく、今回は「スタンプ」です。</div>
+            <h3>スタンプのタイプを選ぶ</h3>
+            <p>「スタンプ」を選びます。</p>
+            <p>アニメーションスタンプ、カスタムスタンプ、メッセージスタンプなどは、最初は選ばなくて大丈夫です。</p>
+            <div class="hint">まずは普通の静止画スタンプから始めるのが一番わかりやすいです。</div>
           </div>
         </div>
 
@@ -186,19 +163,20 @@
           <div class="num">3</div>
           <div>
             <h3>スタンプ情報を入力する</h3>
-            <p>タイトル、説明文、クリエイター名、コピーライトなどを入力します。</p>
-            <p>ここに書いた内容は販売ページに表示されます。</p>
-            <div class="example">
-              <strong>タイトル例</strong><br />
-              こう言ってほしかった夫婦スタンプ
+            <p>販売ページに表示されるタイトルと説明文を入れます。</p>
+            <div class="field">
+              <strong>タイトル</strong>
+              <p>スタンプの名前です。短く、誰が使うか伝わる名前にします。</p>
+              <div class="example">例: こう言ってほしかった夫婦スタンプ</div>
             </div>
-            <div class="example">
-              <strong>説明文例</strong><br />
-              夫婦や家族のやりとりで使いやすい、やさしい連絡スタンプです。帰宅連絡、お願い、ありがとう、体調不良、限界の日の一言まで、責めずに伝えたい場面に使えます。
+            <div class="field">
+              <strong>スタンプ説明文</strong>
+              <p>どんな人が、どんな場面で使うスタンプかを書きます。</p>
+              <div class="example">例: 夫婦や家族のやりとりで使いやすい、やさしい連絡スタンプです。帰宅連絡、お願い、ありがとう、体調不良、限界の日の一言まで、責めずに伝えたい場面に使えます。</div>
             </div>
-            <div class="example">
-              <strong>コピーライト例</strong><br />
-              © Your Stamps
+            <div class="field">
+              <strong>言語追加</strong>
+              <p>最初は日本語だけでも進められます。海外向けに出したい場合は、英語タイトルと英語説明文も用意します。</p>
             </div>
           </div>
         </div>
@@ -206,8 +184,43 @@
         <div class="step">
           <div class="num">4</div>
           <div>
+            <h3>販売情報を入力する</h3>
+            <p>クリエイター名、コピーライト、AIの使用、カテゴリなどを選びます。</p>
+            <div class="field">
+              <strong>クリエイター名</strong>
+              <p>販売ページに表示される作者名です。本名でなくても大丈夫ですが、公開してよい名前にします。</p>
+            </div>
+            <div class="field">
+              <strong>コピーライト</strong>
+              <p>作品の権利者を示す短い表記です。</p>
+              <div class="example">例: © Your Stamps</div>
+            </div>
+            <div class="field">
+              <strong>AIの使用</strong>
+              <p>画像生成AIを使った場合は、AIを使用している方を選びます。</p>
+              <div class="choice">迷ったら、実際にAI画像生成を使ったかどうかで判断します。使ったなら正直に「AIを使用」に寄せます。</div>
+            </div>
+            <div class="field">
+              <strong>テイストカテゴリ・キャラクターカテゴリ</strong>
+              <p>スタンプの雰囲気に近いものを選びます。完全にぴったりでなくても、近いものを選べば大丈夫です。</p>
+              <div class="choice">迷ったら「かわいい」「日常」「キャラクター」系に近い選択肢を探します。</div>
+            </div>
+            <div class="field">
+              <strong>プライベート設定</strong>
+              <p>販売ページに公開したいなら「公開」にします。身内だけで使いたい場合は非公開系の設定を確認します。</p>
+            </div>
+            <div class="field">
+              <strong>販売エリア</strong>
+              <p>最初は日本向け、または販売可能なエリアを選びます。言語や内容に合わせて選びます。</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="num">5</div>
+          <div>
             <h3>画像をアップロードする</h3>
-            <p>申請には、次の画像が必要です。</p>
+            <p>申請には、画像が複数必要です。</p>
             <ul>
               <li>メイン画像 1枚</li>
               <li>スタンプ画像 8枚・16枚・24枚・32枚・40枚のどれか</li>
@@ -218,24 +231,55 @@
         </div>
 
         <div class="step">
-          <div class="num">5</div>
+          <div class="num">6</div>
           <div>
-            <h3>プレビューで確認する</h3>
-            <p>販売ページやトーク画面でどう見えるかを確認します。</p>
-            <p>文字が小さい、端が切れている、白い四角が残っている場合は直します。</p>
-            <div class="hint">かわいさより先に「読める・切れない・使う場面がある」を見ます。</div>
+            <h3>ライセンス証明を確認する</h3>
+            <p>写真を使ったか、素材を使ったか、権利を証明するものが必要かを確認します。</p>
+            <div class="field">
+              <strong>写真の使用</strong>
+              <p>写真を使っていなければ、写真未使用の選択肢を選びます。</p>
+            </div>
+            <div class="field">
+              <strong>ライセンス証明書</strong>
+              <p>他人の素材、写真、ロゴ、既存キャラ風のものを使った場合は要注意です。自分で作ったオリジナル画像でも、使ったサービスの規約は確認します。</p>
+            </div>
+            <div class="hint">個人情報、他人の写真、有名キャラ、企業ロゴ、既存作品に似すぎたものは避けるのが安全です。</div>
           </div>
         </div>
 
         <div class="step">
-          <div class="num">6</div>
+          <div class="num">7</div>
           <div>
-            <h3>審査をリクエストする</h3>
-            <p>入力と画像を確認したら「リクエスト」または「審査リクエスト」を押します。</p>
-            <p>LINE側の審査が終わるまで待ちます。</p>
-            <div class="hint">承認されたあと、販売開始には「リリース」ボタンが必要な場合があります。</div>
+            <h3>保存して、画像登録へ進む</h3>
+            <p>入力が終わったら、画面下の「保存」を押します。</p>
+            <p>そのあと、画像登録やプレビュー確認へ進みます。</p>
+            <div class="hint">赤いエラー文が出ている場合は、必須項目が足りていないことが多いです。</div>
           </div>
         </div>
+
+        <div class="step">
+          <div class="num">8</div>
+          <div>
+            <h3>審査をリクエストする</h3>
+            <p>画像・説明・販売情報を確認したら、審査リクエストをします。</p>
+            <p>承認されたあと、販売開始には「リリース」ボタンが必要な場合があります。</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Your Stampsで先に用意しておくと楽なもの</h2>
+      <ul>
+        <li>スタンプ画像一式</li>
+        <li>メイン画像用にしたい代表画像</li>
+        <li>トークルームタブ画像に使いたい顔アップ画像</li>
+        <li>タイトル</li>
+        <li>説明文</li>
+        <li>コピーライト表記</li>
+      </ul>
+      <div class="warn">
+        申請用のメイン画像・タブ画像の自動作成は、今後の追加候補です。現時点では、必要なサイズに合わせて別途調整してください。
       </div>
     </section>
 
@@ -248,6 +292,7 @@
         <li>画像の端が切れていない</li>
         <li>背景の白四角が意図せず残っていない</li>
         <li>有名キャラ・ロゴ・商標に似すぎていない</li>
+        <li>AIを使った場合は、AI使用の項目を正しく選んでいる</li>
         <li>LINE公式ツールのように見える名前にしていない</li>
       </ul>
     </section>
@@ -256,23 +301,24 @@
       <h2>よくある失敗</h2>
       <h3>文字が小さすぎる</h3>
       <p>スマホのトーク画面では、思ったより小さく見えます。短い言葉にするか、文字を大きくします。</p>
-      <h3>画像の端が切れている</h3>
-      <p>上下左右に少し余白を残します。</p>
+      <h3>申請画面で何を選ぶかわからない</h3>
+      <p>最初は、普通の静止画スタンプ、公開してよいクリエイター名、正直なAI使用申告、近いカテゴリを選ぶことを意識します。</p>
       <h3>AI画像の文字が崩れている</h3>
       <p>画像生成AIに文字まで作らせると崩れやすいです。キャラ画像だけ作って、文字はあとから入れるのがおすすめです。</p>
-      <h3>公式とまぎらわしい名前にしている</h3>
-      <p>LINE公式のアプリに見える名前や説明は避けます。「非公式の補助ツール」「申請前の下ごしらえ」と書くと安全です。</p>
+      <h3>権利が不安な画像を使っている</h3>
+      <p>他人の写真、有名キャラ、ロゴ、既存作品に似すぎた画像は避けます。素材を使った場合は、素材元の規約を確認します。</p>
     </section>
 
     <section class="card">
       <h2>最後の確認</h2>
-      <p>申請前に、声に出してこの3つを確認してください。</p>
+      <p>申請前に、声に出してこの4つを確認してください。</p>
       <ol>
         <li>これは誰が使うスタンプ？</li>
         <li>どんな場面で使う？</li>
         <li>小さい画面でも読める？</li>
+        <li>権利やAI使用について、正直に説明できる？</li>
       </ol>
-      <p>この3つが答えられれば、かなり良い状態です。</p>
+      <p>この4つが答えられれば、かなり良い状態です。</p>
     </section>
   </main>
 
