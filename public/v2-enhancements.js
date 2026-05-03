@@ -2,6 +2,7 @@
   const STORAGE_LIMIT_KEY = 'your_stamps_generation_count_v2';
   const GALLERY_KEY = 'stampai_gallery';
   const FREE_LIMIT = 3;
+  const COLORS = ['#000000', '#FFFFFF', '#FF4D4D', '#4DFF4D', '#4D4DFF', '#FFFF4D', '#FF4DFF', '#4DFFFF'];
 
   const getCount = () => Number(localStorage.getItem(STORAGE_LIMIT_KEY) || '0');
   const setCount = (value) => localStorage.setItem(STORAGE_LIMIT_KEY, String(value));
@@ -102,26 +103,89 @@
     characterHeading.parentElement?.appendChild(badge);
   };
 
+  const clickExistingColorControl = (color) => {
+    const buttons = [...document.querySelectorAll('button')];
+    const target = buttons.find((button) => {
+      const style = button.getAttribute('style') || '';
+      const aria = button.getAttribute('aria-label') || '';
+      const title = button.getAttribute('title') || '';
+      return style.includes(color) || aria.includes(color) || title.includes(color);
+    });
+
+    if (target) {
+      target.click();
+      return true;
+    }
+
+    return false;
+  };
+
+  const injectMobileColorControls = () => {
+    const input = document.querySelector('input[placeholder="文字入力（2行まで）"], input[placeholder="文字入力"]');
+    if (!input) return;
+
+    const panel = input.closest('.bg-white');
+    if (!panel || panel.querySelector('[data-v2-mobile-colors]')) return;
+
+    const wrapper = document.createElement('div');
+    wrapper.dataset.v2MobileColors = 'true';
+    wrapper.style.cssText = 'padding-top:4px;';
+    wrapper.innerHTML = `
+      <div style="font-size:11px;color:#64748b;font-weight:800;margin-bottom:8px;">文字色</div>
+      <div style="display:flex;gap:8px;overflow-x:auto;padding-bottom:4px;">
+        ${COLORS.map((color) => `
+          <button
+            type="button"
+            data-v2-color="${color}"
+            aria-label="文字色 ${color}"
+            style="width:34px;height:34px;flex:0 0 auto;border-radius:999px;border:2px solid #e2e8f0;background:${color};box-shadow:0 2px 6px rgba(15,23,42,.12);"
+          ></button>
+        `).join('')}
+      </div>
+      <p style="font-size:10px;color:#94a3b8;margin-top:6px;line-height:1.5;">白文字は黒フチ、黒文字は白フチで見やすくなります。</p>
+    `;
+
+    const fontRow = panel.querySelector('.overflow-x-auto');
+    if (fontRow) {
+      fontRow.insertAdjacentElement('afterend', wrapper);
+    } else {
+      input.insertAdjacentElement('afterend', wrapper);
+    }
+
+    wrapper.querySelectorAll('[data-v2-color]').forEach((button) => {
+      button.addEventListener('click', () => {
+        const color = button.getAttribute('data-v2-color');
+        const ok = clickExistingColorControl(color);
+        if (!ok) {
+          window.__yourStampsPendingColor = color;
+          alert('この画面では色ボタンの連動に失敗しました。PC表示の色選択か、次の本体修正版で反映します。');
+        }
+      });
+    });
+  };
+
   const enhanceTextInput = () => {
     const input = document.querySelector('input[placeholder="文字入力"]');
-    if (!input || input.dataset.v2TwoLineReady === 'true') return;
-    input.dataset.v2TwoLineReady = 'true';
+    if (input && input.dataset.v2TwoLineReady !== 'true') {
+      input.dataset.v2TwoLineReady = 'true';
+      input.setAttribute('maxlength', '37');
+      input.setAttribute('placeholder', '文字入力（2行まで）');
 
-    input.setAttribute('maxlength', '37');
-    input.setAttribute('placeholder', '文字入力（2行まで）');
+      const hint = document.createElement('p');
+      hint.textContent = '改行は2行まで。長すぎる文字は少し短くしてね。';
+      hint.style.cssText = 'font-size:11px;color:#64748b;margin-top:6px;line-height:1.5;';
+      input.insertAdjacentElement('afterend', hint);
 
-    const hint = document.createElement('p');
-    hint.textContent = '改行は2行まで。長すぎる文字は少し短くしてね。';
-    hint.style.cssText = 'font-size:11px;color:#64748b;margin-top:6px;line-height:1.5;';
-    input.insertAdjacentElement('afterend', hint);
+      input.addEventListener('input', () => {
+        const next = normalizeTwoLines(input.value);
+        if (input.value !== next) {
+          input.value = next;
+          input.dispatchEvent(new Event('input', { bubbles: true }));
+        }
+      });
+    }
 
-    input.addEventListener('input', () => {
-      const next = normalizeTwoLines(input.value);
-      if (input.value !== next) {
-        input.value = next;
-        input.dispatchEvent(new Event('input', { bubbles: true }));
-      }
-    });
+    injectMobileColorControls();
   };
 
   const injectExportPanel = () => {
