@@ -3,6 +3,8 @@ import { GoogleGenAI } from "@google/genai";
 const MAX_PROMPT_LENGTH = 300;
 const MAX_GENERATION_COUNT = 4;
 const MAX_REFERENCE_IMAGE_BASE64_LENGTH = 7 * 1024 * 1024;
+const PRIMARY_IMAGE_MODEL = process.env.GEMINI_IMAGE_MODEL || "gemini-3-flash-image-preview";
+const FALLBACK_IMAGE_MODEL = "gemini-2.5-flash-image";
 const DEFAULT_EXPRESSIONS = [
   "Happy and smiling",
   "Sad or crying",
@@ -99,6 +101,30 @@ Requirements:
 - Professional sticker quality`;
 }
 
+async function generateContentWithModelFallback(ai: GoogleGenAI, parts: any[]) {
+  const models = Array.from(new Set([PRIMARY_IMAGE_MODEL, FALLBACK_IMAGE_MODEL].filter(Boolean)));
+  let lastError: any;
+
+  for (const model of models) {
+    try {
+      return await ai.models.generateContent({
+        model,
+        contents: { parts },
+        config: {
+          imageConfig: {
+            aspectRatio: "1:1",
+          },
+        },
+      });
+    } catch (error: any) {
+      lastError = error;
+      console.warn(`Image generation failed with ${model}. Trying fallback if available.`, error?.message || error);
+    }
+  }
+
+  throw lastError || new Error("image_model_failed");
+}
+
 function sendSafeError(res: VercelResponse, error: any) {
   const message = error?.message || "unknown_error";
   console.error("Generate API Error:", message);
@@ -163,15 +189,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         });
       }
 
-      const response = await ai.models.generateContent({
-        model: "gemini-2.5-flash-image",
-        contents: { parts },
-        config: {
-          imageConfig: {
-            aspectRatio: "1:1",
-          },
-        },
-      });
+      const response = await generateContentWithModelFallback(ai, parts);
 
       const candidate = response.candidates?.[0];
       if (!candidate || candidate.finishReason === "SAFETY") {
