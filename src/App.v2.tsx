@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import { Download, Image as ImageIcon, Loader2, Sparkles, Trash2 } from 'lucide-react';
+import { Download, Image as ImageIcon, Loader2, Sparkles, Trash2, Wand2 } from 'lucide-react';
 import { generateStickerSet } from './lib/gemini';
 import { COLORS, FONTS } from './constants/sticker';
 import { useGallery } from './hooks/useGallery';
@@ -11,6 +11,7 @@ import { ColorPicker } from './components/sticker/ColorPicker';
 import { ExportPanel } from './components/sticker/ExportPanel';
 
 type Tab = 'generate' | 'edit' | 'saved';
+type CreationMode = 'ai' | 'direct';
 
 function drawStickerToCanvas(
   canvas: HTMLCanvasElement,
@@ -32,9 +33,9 @@ function drawStickerToCanvas(
 
     const lines = splitStickerText(text).filter(Boolean);
     const hasTwoLines = lines.length >= 2;
-    const imageSize = hasTwoLines ? 196 : 214;
+    const imageSize = hasTwoLines ? 190 : 210;
     const x = (canvas.width - imageSize) / 2;
-    const y = hasTwoLines ? 6 : 8;
+    const y = hasTwoLines ? 2 : 6;
     ctx.drawImage(img, x, y, imageSize, imageSize);
 
     const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
@@ -47,15 +48,15 @@ function drawStickerToCanvas(
     ctx.putImageData(imageData, 0, 0);
 
     if (lines.length > 0) {
-      const fontSize = lines.length === 1 ? 34 : 25;
-      const lineHeight = lines.length === 1 ? 34 : 28;
+      const fontSize = lines.length === 1 ? 34 : 23;
+      const lineHeight = lines.length === 1 ? 34 : 27;
       ctx.font = `bold ${fontSize}px ${font}, sans-serif`;
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
       ctx.fillStyle = color;
       ctx.strokeStyle = color === '#FFFFFF' ? '#000000' : '#FFFFFF';
       ctx.lineWidth = lines.length === 1 ? 6 : 5;
-      const startY = lines.length === 1 ? 238 : 220;
+      const startY = lines.length === 1 ? 236 : 214;
       lines.forEach((line, index) => {
         const lineY = startY + index * lineHeight;
         ctx.strokeText(line, canvas.width / 2, lineY);
@@ -110,6 +111,7 @@ function StickerCanvas({
 
 export default function AppV2() {
   const [tab, setTab] = useState<Tab>('generate');
+  const [creationMode, setCreationMode] = useState<CreationMode>('ai');
   const [prompt, setPrompt] = useState('');
   const [variations, setVariations] = useState('');
   const [loading, setLoading] = useState(false);
@@ -120,9 +122,24 @@ export default function AppV2() {
   const [selectedColor, setSelectedColor] = useState(COLORS[0]);
   const [refImage, setRefImage] = useState<string | null>(null);
   const fileRef = useRef<HTMLInputElement>(null);
+  const directFileRef = useRef<HTMLInputElement>(null);
 
   const { gallery, addGalleryItem, deleteGalleryItem } = useGallery();
   const { count, limit, canGenerate, consumeGeneration } = useGenerationLimit();
+
+  const readImageFile = (file: File, callback: (dataUrl: string) => void) => {
+    const reader = new FileReader();
+    reader.onload = (readerEvent) => callback(readerEvent.target?.result as string);
+    reader.readAsDataURL(file);
+  };
+
+  const useUploadedImageDirectly = (file: File) => {
+    readImageFile(file, (dataUrl) => {
+      setSelectedImage(dataUrl);
+      setStickerText('');
+      setTab('edit');
+    });
+  };
 
   const generate = async (countToGenerate: number) => {
     if (!prompt.trim()) return;
@@ -203,71 +220,118 @@ export default function AppV2() {
         {tab === 'generate' && (
           <section className="bg-white rounded-[28px] border border-slate-100 shadow-strong p-5 space-y-4">
             <div className="text-center space-y-1">
-              <h1 className="text-2xl font-black">キャラを生成</h1>
-              <p className="text-sm text-slate-500">無料生成 {Math.min(count, limit)}/{limit} 回</p>
+              <h1 className="text-2xl font-black">作り方を選ぶ</h1>
+              <p className="text-sm text-slate-500">AI生成も、手描き画像そのままも使えます。</p>
             </div>
 
-            <input
-              value={prompt}
-              onChange={(event) => setPrompt(event.target.value)}
-              placeholder="例: 白いくま、ゆるい猫、箱を持つモンスター"
-              className="w-full px-4 py-3 rounded-2xl bg-slate-50 border border-slate-200 outline-none focus:border-green-500"
-            />
-            <input
-              value={variations}
-              onChange={(event) => setVariations(event.target.value)}
-              placeholder="表情指定：例) 喜ぶ, あやまる, 眠い"
-              className="w-full px-4 py-3 rounded-2xl bg-slate-50 border border-slate-200 outline-none focus:border-green-500 text-sm"
-            />
+            <div className="grid grid-cols-2 gap-2 bg-slate-50 p-2 rounded-2xl border border-slate-100">
+              <button
+                type="button"
+                onClick={() => setCreationMode('ai')}
+                className={`p-3 rounded-xl text-left transition-all ${creationMode === 'ai' ? 'bg-green-600 text-white shadow-sm' : 'bg-white text-slate-600'}`}
+              >
+                <div className="flex items-center gap-2 font-black text-sm"><Wand2 size={16} /> AIで作る</div>
+                <div className="text-[11px] opacity-80 mt-1 leading-relaxed">プロンプトや参考画像からキャラ生成</div>
+              </button>
+              <button
+                type="button"
+                onClick={() => setCreationMode('direct')}
+                className={`p-3 rounded-xl text-left transition-all ${creationMode === 'direct' ? 'bg-green-600 text-white shadow-sm' : 'bg-white text-slate-600'}`}
+              >
+                <div className="flex items-center gap-2 font-black text-sm"><ImageIcon size={16} /> 画像そのまま</div>
+                <div className="text-[11px] opacity-80 mt-1 leading-relaxed">手描き絵を透過・サイズ合わせ</div>
+              </button>
+            </div>
 
-            {refImage ? (
-              <div className="w-28 h-28 mx-auto rounded-2xl overflow-hidden border-2 border-green-500 relative">
-                <img src={refImage} className="w-full h-full object-cover" />
-                <button type="button" onClick={() => setRefImage(null)} className="absolute top-1 right-1 bg-black/60 text-white rounded-full px-2">×</button>
+            {creationMode === 'direct' ? (
+              <div className="space-y-4">
+                <div className="p-4 rounded-2xl bg-amber-50 border border-amber-100 text-sm text-amber-900 leading-relaxed">
+                  手持ち画像をAIで作り直さず、そのまま文字入れ画面に送ります。白背景は保存時にできるだけ透過します。
+                </div>
+                <button
+                  type="button"
+                  onClick={() => directFileRef.current?.click()}
+                  className="w-full py-5 rounded-2xl border-2 border-dashed border-green-200 bg-green-50 text-green-700 font-black flex items-center justify-center gap-2"
+                >
+                  <ImageIcon size={20} /> 手描き画像を選んで文字入れへ
+                </button>
+                <input
+                  ref={directFileRef}
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  onChange={(event) => {
+                    const file = event.target.files?.[0];
+                    if (!file) return;
+                    useUploadedImageDirectly(file);
+                    event.currentTarget.value = '';
+                  }}
+                />
               </div>
             ) : (
-              <button
-                type="button"
-                onClick={() => fileRef.current?.click()}
-                className="w-full py-3 rounded-2xl border-2 border-dashed border-slate-200 text-slate-400 font-bold flex items-center justify-center gap-2"
-              >
-                <ImageIcon size={18} /> 参考画像を使う
-              </button>
+              <>
+                <div className="text-center text-sm text-slate-500">無料生成 {Math.min(count, limit)}/{limit} 回</div>
+                <input
+                  value={prompt}
+                  onChange={(event) => setPrompt(event.target.value)}
+                  placeholder="例: 白いくま、ゆるい猫、箱を持つモンスター"
+                  className="w-full px-4 py-3 rounded-2xl bg-slate-50 border border-slate-200 outline-none focus:border-green-500"
+                />
+                <input
+                  value={variations}
+                  onChange={(event) => setVariations(event.target.value)}
+                  placeholder="表情指定：例) 喜ぶ, あやまる, 眠い"
+                  className="w-full px-4 py-3 rounded-2xl bg-slate-50 border border-slate-200 outline-none focus:border-green-500 text-sm"
+                />
+
+                {refImage ? (
+                  <div className="w-28 h-28 mx-auto rounded-2xl overflow-hidden border-2 border-green-500 relative">
+                    <img src={refImage} className="w-full h-full object-cover" />
+                    <button type="button" onClick={() => setRefImage(null)} className="absolute top-1 right-1 bg-black/60 text-white rounded-full px-2">×</button>
+                  </div>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={() => fileRef.current?.click()}
+                    className="w-full py-3 rounded-2xl border-2 border-dashed border-slate-200 text-slate-400 font-bold flex items-center justify-center gap-2"
+                  >
+                    <ImageIcon size={18} /> 参考画像を使う
+                  </button>
+                )}
+                <input
+                  ref={fileRef}
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  onChange={(event) => {
+                    const file = event.target.files?.[0];
+                    if (!file) return;
+                    readImageFile(file, setRefImage);
+                  }}
+                />
+
+                <div className="grid grid-cols-2 gap-3">
+                  <button
+                    type="button"
+                    onClick={() => generate(1)}
+                    disabled={loading || !prompt.trim()}
+                    className="py-3 rounded-2xl bg-white border border-slate-200 font-bold disabled:opacity-50 flex items-center justify-center gap-2"
+                  >
+                    {loading ? <Loader2 className="animate-spin" /> : <Sparkles size={18} />} 1つ生成
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => generate(4)}
+                    disabled={loading || !prompt.trim()}
+                    className="py-3 rounded-2xl bg-green-600 text-white font-bold disabled:opacity-50 flex items-center justify-center gap-2"
+                  >
+                    {loading ? <Loader2 className="animate-spin" /> : <Sparkles size={18} />} 4表情
+                  </button>
+                </div>
+              </>
             )}
-            <input
-              ref={fileRef}
-              type="file"
-              accept="image/*"
-              className="hidden"
-              onChange={(event) => {
-                const file = event.target.files?.[0];
-                if (!file) return;
-                const reader = new FileReader();
-                reader.onload = (readerEvent) => setRefImage(readerEvent.target?.result as string);
-                reader.readAsDataURL(file);
-              }}
-            />
 
-            <div className="grid grid-cols-2 gap-3">
-              <button
-                type="button"
-                onClick={() => generate(1)}
-                disabled={loading || !prompt.trim()}
-                className="py-3 rounded-2xl bg-white border border-slate-200 font-bold disabled:opacity-50 flex items-center justify-center gap-2"
-              >
-                {loading ? <Loader2 className="animate-spin" /> : <Sparkles size={18} />} 1つ生成
-              </button>
-              <button
-                type="button"
-                onClick={() => generate(4)}
-                disabled={loading || !prompt.trim()}
-                className="py-3 rounded-2xl bg-green-600 text-white font-bold disabled:opacity-50 flex items-center justify-center gap-2"
-              >
-                {loading ? <Loader2 className="animate-spin" /> : <Sparkles size={18} />} 4表情
-              </button>
-            </div>
-
-            {chars.length > 0 && (
+            {chars.length > 0 && creationMode === 'ai' && (
               <div className="pt-3 border-t border-slate-100">
                 <div className="text-[11px] text-slate-400 font-bold mb-2">生成履歴</div>
                 <div className="flex gap-2 overflow-x-auto pb-2">
@@ -308,9 +372,9 @@ export default function AppV2() {
               </>
             ) : (
               <div className="text-center py-12 space-y-3">
-                <div className="text-slate-400">先にキャラを生成してください。</div>
+                <div className="text-slate-400">先にキャラを生成、または手持ち画像を選んでください。</div>
                 <button type="button" onClick={() => setTab('generate')} className="px-4 py-2 rounded-full bg-green-600 text-white font-bold text-sm">
-                  生成へ
+                  作成へ
                 </button>
               </div>
             )}
