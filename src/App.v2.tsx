@@ -30,9 +30,11 @@ function drawStickerToCanvas(
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-    const imageSize = 220;
+    const lines = splitStickerText(text).filter(Boolean);
+    const hasTwoLines = lines.length >= 2;
+    const imageSize = hasTwoLines ? 196 : 214;
     const x = (canvas.width - imageSize) / 2;
-    const y = 8;
+    const y = hasTwoLines ? 6 : 8;
     ctx.drawImage(img, x, y, imageSize, imageSize);
 
     const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
@@ -44,18 +46,18 @@ function drawStickerToCanvas(
     }
     ctx.putImageData(imageData, 0, 0);
 
-    const lines = splitStickerText(text).filter(Boolean);
     if (lines.length > 0) {
-      const fontSize = lines.length === 1 ? 34 : 28;
+      const fontSize = lines.length === 1 ? 34 : 25;
+      const lineHeight = lines.length === 1 ? 34 : 28;
       ctx.font = `bold ${fontSize}px ${font}, sans-serif`;
       ctx.textAlign = 'center';
       ctx.textBaseline = 'middle';
       ctx.fillStyle = color;
       ctx.strokeStyle = color === '#FFFFFF' ? '#000000' : '#FFFFFF';
-      ctx.lineWidth = 6;
-      const startY = lines.length === 1 ? 244 : 232;
+      ctx.lineWidth = lines.length === 1 ? 6 : 5;
+      const startY = lines.length === 1 ? 238 : 220;
       lines.forEach((line, index) => {
-        const lineY = startY + index * 34;
+        const lineY = startY + index * lineHeight;
         ctx.strokeText(line, canvas.width / 2, lineY);
         ctx.fillText(line, canvas.width / 2, lineY);
       });
