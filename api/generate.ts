@@ -65,6 +65,40 @@ function normalizeExpressions(customExpressions: unknown, count: unknown) {
   return requestedCount === 1 ? ["Happy"] : DEFAULT_EXPRESSIONS.slice(0, requestedCount);
 }
 
+function buildGenerationPrompt(prompt: string, expression: string, hasReferenceImage: boolean) {
+  if (hasReferenceImage) {
+    return `Create a LINE sticker based on the provided reference image and the user prompt: ${prompt}.
+Current Variation/Expression: ${expression}.
+
+Reference image preservation rules:
+- Use the provided image as the exact character source.
+- Do NOT create a new character design.
+- Preserve the face shape, eye shape, hairstyle, body shape, clothing, colors, silhouette, and handmade feeling as much as possible.
+- Preserve the original rough, hand-drawn, simple, or childlike charm if it exists.
+- Only change the expression and small pose details for the requested variation.
+- Do NOT make the character look like a different person.
+- Do NOT modernize, beautify, simplify, polish, or reinterpret the design too much.
+- Do NOT change hairstyle, outfit, colors, species, age, body proportions, or major design features.
+
+Sticker requirements:
+- Character only, NO TEXT in the image.
+- Full body if visible in the reference image.
+- Centered character.
+- Simple solid white background.
+- Suitable for a LINE sticker while preserving the original character identity.`;
+  }
+
+  return `Create a professional sticker character: ${prompt}.
+Current Variation/Expression: ${expression}.
+Requirements:
+- Character only, NO TEXT in the image
+- Full body, centered character
+- Solid white background
+- Clean vector style with bold, simple outlines
+- Vibrant colors, cute and expressive
+- Professional sticker quality`;
+}
+
 function sendSafeError(res: VercelResponse, error: any) {
   const message = error?.message || "unknown_error";
   console.error("Generate API Error:", message);
@@ -116,15 +150,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const results = await Promise.all(expressionsToUse.map(async (expression) => {
       const parts: any[] = [
         {
-          text: `Create a professional sticker character: ${prompt}.
-          Current Variation/Expression: ${expression}.
-          Requirements:
-          - Character only, NO TEXT in the image
-          - Full body, centered character
-          - Solid white background
-          - Clean vector style with bold, simple outlines
-          - Vibrant colors, cute and expressive
-          - Professional sticker quality`,
+          text: buildGenerationPrompt(prompt, expression, Boolean(referenceImageData)),
         },
       ];
 
@@ -135,7 +161,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
             data: referenceImageData,
           },
         });
-        parts[0].text += " Use the provided image for character design and style reference to ensure consistency.";
       }
 
       const response = await ai.models.generateContent({
