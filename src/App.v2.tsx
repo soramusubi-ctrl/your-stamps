@@ -13,6 +13,37 @@ import { ExportPanel } from './components/sticker/ExportPanel';
 type Tab = 'generate' | 'edit' | 'saved';
 type CreationMode = 'ai' | 'direct';
 
+function removeWhitePaperBackground(ctx: CanvasRenderingContext2D, width: number, height: number) {
+  const imageData = ctx.getImageData(0, 0, width, height);
+  const data = imageData.data;
+
+  for (let i = 0; i < data.length; i += 4) {
+    const r = data[i];
+    const g = data[i + 1];
+    const b = data[i + 2];
+    const brightness = (r + g + b) / 3;
+    const max = Math.max(r, g, b);
+    const min = Math.min(r, g, b);
+    const saturation = max - min;
+
+    const isPurePaper = brightness > 246 && saturation < 18;
+    const isLightPaper = brightness > 232 && saturation < 20;
+    const isShadowPaper = brightness > 218 && saturation < 14;
+
+    if (isPurePaper) {
+      data[i + 3] = 0;
+    } else if (isLightPaper) {
+      const alpha = Math.max(0, Math.min(255, (246 - brightness) * 12));
+      data[i + 3] = Math.min(data[i + 3], alpha);
+    } else if (isShadowPaper) {
+      const alpha = Math.max(24, Math.min(140, (232 - brightness) * 10));
+      data[i + 3] = Math.min(data[i + 3], alpha);
+    }
+  }
+
+  ctx.putImageData(imageData, 0, 0);
+}
+
 function drawStickerToCanvas(
   canvas: HTMLCanvasElement,
   imageSrc: string,
@@ -38,14 +69,7 @@ function drawStickerToCanvas(
     const y = hasTwoLines ? 2 : 6;
     ctx.drawImage(img, x, y, imageSize, imageSize);
 
-    const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
-    const data = imageData.data;
-    for (let i = 0; i < data.length; i += 4) {
-      if (data[i] > 245 && data[i + 1] > 245 && data[i + 2] > 245) {
-        data[i + 3] = 0;
-      }
-    }
-    ctx.putImageData(imageData, 0, 0);
+    removeWhitePaperBackground(ctx, canvas.width, canvas.height);
 
     if (lines.length > 0) {
       const fontSize = lines.length === 1 ? 34 : 23;
@@ -246,7 +270,7 @@ export default function AppV2() {
             {creationMode === 'direct' ? (
               <div className="space-y-4">
                 <div className="p-4 rounded-2xl bg-amber-50 border border-amber-100 text-sm text-amber-900 leading-relaxed">
-                  手持ち画像をAIで作り直さず、そのまま文字入れ画面に送ります。白背景は保存時にできるだけ透過します。
+                  手持ち画像をAIで作り直さず、そのまま文字入れ画面に送ります。白い紙の背景は保存時にできるだけ透過します。
                 </div>
                 <button
                   type="button"
