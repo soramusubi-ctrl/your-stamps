@@ -1,7 +1,7 @@
 import { GoogleGenAI } from "@google/genai";
 
 const MAX_INTENT_LENGTH = 300;
-const PLAN_MODEL = "gemini-2.5-flash";
+const PLAN_MODEL = "gemini-3.1-flash-preview";
 
 type VercelRequest = {
   method?: string;
@@ -65,7 +65,7 @@ function normalizePlan(plan: any, intent: string) {
     englishDescription: String(plan?.englishDescription || fallback.englishDescription).slice(0, 160),
     stylePrompt: String(plan?.stylePrompt || fallback.stylePrompt).slice(0, 240),
     items: items.slice(0, 8).map((item: any, index: number) => ({
-      text: String(item?.text || fallback.items[index]?.text || "OK").replace(/\r\n/g, "\n").split("\n").slice(0, 2).map((line) => line.slice(0, 12)).join("\n"),
+      text: String(item?.text || fallback.items[index]?.text || "OK").replace(/\r\n/g, "\n").split("\n").slice(0, 2).map((line: string) => line.slice(0, 12)).join("\n"),
       expression: String(item?.expression || fallback.items[index]?.expression || "cute expression").slice(0, 100),
     })).concat(fallback.items).slice(0, 8),
   };
