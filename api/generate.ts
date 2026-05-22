@@ -1,7 +1,7 @@
 import { GoogleGenAI } from "@google/genai";
 
 const MAX_PROMPT_LENGTH = 300;
-const MAX_GENERATION_COUNT = 4;
+const MAX_GENERATION_COUNT = 8;
 const MAX_REFERENCE_IMAGE_BASE64_LENGTH = 7 * 1024 * 1024;
 const IMAGE_MODEL = "gemini-2.5-flash-image";
 const DEFAULT_EXPRESSIONS = [
@@ -9,6 +9,10 @@ const DEFAULT_EXPRESSIONS = [
   "Sad or crying",
   "Angry or frustrated",
   "Surprised or shocked",
+  "Saying thank you warmly",
+  "Apologizing gently",
+  "Tired but kind",
+  "Cheering softly",
 ];
 
 type VercelRequest = {
@@ -63,7 +67,7 @@ function normalizeExpressions(customExpressions: unknown, count: unknown) {
       .map((expression) => expression.trim().slice(0, 80));
   }
 
-  return requestedCount === 1 ? ["Happy"] : DEFAULT_EXPRESSIONS.slice(0, requestedCount);
+  return DEFAULT_EXPRESSIONS.slice(0, requestedCount);
 }
 
 function buildGenerationPrompt(prompt: string, expression: string, hasReferenceImage: boolean) {
