@@ -204,6 +204,7 @@
         <button data-oneshot-run type="button" style="flex:2;min-width:180px;padding:12px;border-radius:16px;background:#16a34a;color:white;font-weight:1000;border:none;font-size:14px;">8個まとめて作る</button>
       </div>
       <div data-oneshot-file-name style="font-size:11px;color:#64748b;margin-top:6px;"></div>
+      <div data-oneshot-mode-note style="font-size:11px;color:#64748b;margin-top:4px;line-height:1.5;">参考画像を添付した場合は、その画像をAIで描き直さず、同じ画像に8種類の文字を載せます。</div>
       <div data-oneshot-status style="font-size:12px;color:#64748b;margin-top:10px;line-height:1.6;"></div>
       <div data-oneshot-results></div>
     `;
@@ -228,10 +229,16 @@
       try {
         setStatus(panel, '言葉と雰囲気を読み取っています…');
         const plan = await generatePlan(intent);
-        setStatus(panel, '8個のスタンプ画像を生成しています…少し待ってね。');
-        const expressions = plan.items.map((item) => `${item.expression}. The sticker message is: ${item.text}. Do not render text in image; text will be added later.`);
-        const prompt = `${plan.stylePrompt}. User intent: ${intent}`.slice(0, 300);
-        const images = await generateImages(prompt, referenceImage, expressions);
+        let images = [];
+        if (referenceImage) {
+          setStatus(panel, '参考画像をそのまま使って、8種類の文字を載せています…');
+          images = Array.from({ length: 8 }, () => referenceImage);
+        } else {
+          setStatus(panel, '8個のスタンプ画像を生成しています…少し待ってね。');
+          const expressions = plan.items.map((item) => `${item.expression}. The sticker message is: ${item.text}. Do not render text in image; text will be added later.`);
+          const prompt = `${plan.stylePrompt}. User intent: ${intent}`.slice(0, 300);
+          images = await generateImages(prompt, null, expressions);
+        }
         setStatus(panel, '文字を載せて透過処理しています…');
         const stickers = await Promise.all(images.slice(0, 8).map((image, index) => composeSticker(image, plan.items[index]?.text || '')));
         renderResults(panel, plan, stickers);
