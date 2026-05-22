@@ -3,7 +3,7 @@ import { GoogleGenAI } from "@google/genai";
 const MAX_PROMPT_LENGTH = 300;
 const MAX_GENERATION_COUNT = 8;
 const MAX_REFERENCE_IMAGE_BASE64_LENGTH = 7 * 1024 * 1024;
-const IMAGE_MODEL = "gemini-2.5-flash-image";
+const IMAGE_MODEL = "gemini-3.1-flash-image-preview";
 const DEFAULT_EXPRESSIONS = [
   "Happy and smiling",
   "Sad or crying",
